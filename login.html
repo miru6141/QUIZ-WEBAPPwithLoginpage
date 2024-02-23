@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+
+    <link rel="stylesheet" href="login.css">
+    
+</head>
+<body>
+
+ <div class="container">
+
+    <div class="form-box">
+        
+       <header>
+        <h1 id="title">Login</h1>
+       </header>
+       <form action="">
+       <input type="text" placeholder="Name" id="nameField">
+       <input type="email" placeholder="User Name or Email" id="Email">
+       <input type="password" placeholder="password" id="pass">
+       <a href="">Forget password</a>   
+       <input type="button"  value="Login" id="signinbtn" >
+     <div class="links">
+      <a href="#"><img src="5296499_fb_facebook_facebook logo_icon.png" alt=""></a>
+      <a href="#"><img src="3225183_app_logo_media_popular_social_icon.png" alt=""></a>
+       </div>
+       <p
+         class="signup">Not a number ?<a href="#" id="signupBtn">create Account</a></p>
+       </p>
+       </form>
+
+               
+
+    </div>
+
+ </div>
+
+
+ 
+ <script type="module" >
+ 
+
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import {  getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  import { getDatabase,set,ref } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+ 
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBWMhi0bqqHA5dbt1mI1CSGpZu5k7Kfslo",
+    authDomain: "loginform-43fad.firebaseapp.com",
+    databaseURL: "https://loginform-43fad-default-rtdb.firebaseio.com",
+    projectId: "loginform-43fad",
+    storageBucket: "loginform-43fad.appspot.com",
+    messagingSenderId: "241968260227",
+    appId: "1:241968260227:web:aacd66554121b035b427b6"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const database=getDatabase(app);
+
+
+  
+  // Import the functions you need from the SDKs you need
+ 
+  const siginbtn=document.querySelector('#signinbtn')
+  const name=document.getElementById('nameField')
+
+
+  siginbtn.addEventListener('click',(e)=>{
+  e.preventDefault();
+  const Email=document.querySelector('#Email').value
+  const password=document.querySelector('#pass').value
+  const name=document.getElementById('nameField').value
+  
+  if(siginbtn.value==="Create")
+  {
+ createUserWithEmailAndPassword(auth, Email, password,name)
+  .then((userCredential) => {
+    // Signed up 
+    set(ref(database,'name/'+name.uid),{
+    name:name,
+    Email:Email
+    
+
+  })
+    alert("User Created")
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+    alert(errorMessage )
+  });
+}
+if(siginbtn.value==="Login")
+{
+signInWithEmailAndPassword(auth, Email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    // ...
+ 
+     window.location.assign("index.html")
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    alert( errorMessage)
+    
+  });
+ 
+}
+
+  }) 
+  let flag=1;
+  signupBtn.onclick = function(){
+
+   
+    if(flag===1) 
+  {
+    
+title.innerHTML = "Create Account";
+siginbtn.value="Create"
+name.style.display="block";
+signupBtn.innerHTML="Login"
+  flag=0
+    }
+
+ signupBtn.onclick=function(){
+  if(flag===0)
+{
+ title.innerHTML = "Login";
+siginbtn.value="Login"
+name.style.display="none";
+signupBtn.innerHTML="Create Account"
+flag=1;
+    }
+  }
+
+   
+}
+
+
+ 
+ 
+</script>
+
+</body>
+
+
+
+
+  
+   
+ 
+</html>
